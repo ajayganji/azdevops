@@ -1,0 +1,32 @@
+trigger:
+- main
+
+stages:
+  - stage: BuildandPUSHimagetoACR
+    jobs:
+      - job: Build_Push
+        pool: 
+         vmImage: ubuntu-latest
+        steps:
+          - task: DockerInstaller@0
+            inputs:
+              dockerVersion: '17.09.0-ce'
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'ajay_acr_service_con'
+              repository: 'ajdevops/app1'
+              command: 'buildAndPush'
+              Dockerfile: '**/dockerfile'
+              tags: '$(Build.SourceVersion)'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Build.StagingDirectory)/manifests'
+              Contents: '**'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              CleanTargetFolder: true
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'kubefiles'
+              publishLocation: 'Container'
+          
