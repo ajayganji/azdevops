@@ -5,7 +5,8 @@ stages:
   - stage: BuildandPUSHimagetoACR
     jobs:
       - job: Build_Push
-        pool: ubuntu-latest
+        pool: 
+         name: ubuntu-latest
         steps:
           - task: DockerInstaller@0
             inputs:
