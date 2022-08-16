@@ -16,5 +16,5 @@ stages:
               containerRegistry: 'ajay_acr_service_con'
               repository: 'ajdevops/app1'
               command: 'buildAndPush'
-              Dockerfile: '**/Dockerfile'
+              Dockerfile: '**/dockerfile'
               tags: '$(Build.SourceVersion)'
