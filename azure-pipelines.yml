@@ -2,7 +2,7 @@ trigger:
 - main
 
 stages:
-  - stage: Build_and_PUSH_image_to_ACR
+  - stage: BuildandPUSHimagetoACR
     jobs:
       - job: Build-Push
         pool: ubuntu-latest
