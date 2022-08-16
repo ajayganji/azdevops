@@ -20,10 +20,9 @@ stages:
               tags: '$(Build.SourceVersion)'
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '$(System.DefaultWorkingDirectory)'
-              Contents: '**/manifests'
+              SourceFolder: '$(System.DefaultWorkingDirectory)/manifests'
+              Contents: '**'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
-              CleanTargetFolder: true
           - task: PublishBuildArtifacts@1
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
