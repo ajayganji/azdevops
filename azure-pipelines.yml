@@ -20,8 +20,8 @@ stages:
               tags: '$(Build.SourceVersion)'
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '$(Build.StagingDirectory)/manifests'
-              Contents: '**'
+              SourceFolder: '$(Build.StagingDirectory)'
+              Contents: '**/manifests'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
               CleanTargetFolder: true
           - task: PublishBuildArtifacts@1
