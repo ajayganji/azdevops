@@ -1,0 +1,20 @@
+trigger:
+- main
+
+stages:
+  - stage: Build_and_PUSH_image_to_ACR
+    jobs:
+      - job: Build-Push
+        pool: ubuntu-latest
+        steps:
+          - task: DockerInstaller@0
+            inputs:
+              dockerVersion: '17.09.0-ce'
+          - script: echo (docker version)
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'ajay_acr_service_con'
+              repository: 'ajdevops/app1'
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
+              tags: '$(Build.SourceVersion)'
