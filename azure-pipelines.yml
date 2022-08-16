@@ -18,3 +18,15 @@ stages:
               command: 'buildAndPush'
               Dockerfile: '**/dockerfile'
               tags: '$(Build.SourceVersion)'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Build.StagingDirectory)/manifests'
+              Contents: '**'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              CleanTargetFolder: true
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'kubefiles'
+              publishLocation: 'Container'
+          
