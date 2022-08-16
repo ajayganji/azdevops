@@ -29,6 +29,7 @@ stages:
               ArtifactName: 'kubefiles'
               publishLocation: 'Container'
   - stage: Deploy_to_AKS
+    dependsOn: BuildandPUSHimagetoACR
     jobs:
       - job: Deploy
         pool:
