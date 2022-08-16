@@ -6,7 +6,7 @@ stages:
     jobs:
       - job: Build_Push
         pool: 
-         name: ubuntu-latest
+         vmImage: ubuntu-latest
         steps:
           - task: DockerInstaller@0
             inputs:
