@@ -4,7 +4,7 @@ trigger:
 stages:
   - stage: BuildandPUSHimagetoACR
     jobs:
-      - job: Build-Push
+      - job: Build_Push
         pool: ubuntu-latest
         steps:
           - task: DockerInstaller@0
