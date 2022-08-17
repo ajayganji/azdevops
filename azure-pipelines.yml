@@ -42,6 +42,13 @@ stages:
             targetPath: '$(System.ArtifactsDirectory)/manifests'
         - task: KubernetesManifest@0
           inputs:
+            action: 'createSecret'
+            kubernetesServiceConnection: 'ajay_aks_connection'
+            secretType: 'dockerRegistry'
+            secretName: 'ganjacr-azdevops-secret'
+            dockerRegistryEndpoint: 'ajay_acr_service_con'
+        - task: KubernetesManifest@0
+          inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'ajay_aks_connection'
             manifests: |
@@ -49,4 +56,6 @@ stages:
               $(System.ArtifactsDirectory)/manifests/services.yaml
             containers: |
               ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)
+            imagePullSecrets: |
+              ganjacr-azdevops-secret
         
