@@ -45,7 +45,7 @@ stages:
           inputs:
             action: 'createSecret'
             kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-            namespace: 'dev'
+            namespace: 'default'
             secretType: 'dockerRegistry'
             secretName: 'ganjacr-azdevops-secret'
             dockerRegistryEndpoint: 'ganjiacr'
@@ -53,7 +53,7 @@ stages:
           inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-            namespace: 'dev'
+            namespace: 'default'
             manifests: |
               $(System.ArtifactsDirectory)/manifests/deployment.yaml
               $(System.ArtifactsDirectory)/manifests/services.yaml
