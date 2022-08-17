@@ -51,7 +51,7 @@ stages:
             namespace: 'dev'
             secretType: 'dockerRegistry'
             secretName: 'ganjacr-azdevops-secret'
-            dockerRegistryEndpoint: 'ajay_acr_service_con'
+            dockerRegistryEndpoint: 'ganjiacr'
         - task: KubernetesManifest@0
           inputs:
             action: 'deploy'
