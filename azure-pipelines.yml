@@ -35,12 +35,11 @@ stages:
         pool:
           vmImage: ubuntu-latest
         steps:
-        - task: DownloadBuildArtifacts@1
+        - task: DownloadPipelineArtifact@2
           inputs:
             buildType: 'current'
-            downloadType: 'single'
             artifactName: 'manifests'
-            downloadPath: '$(System.ArtifactsDirectory)/manifests'
+            targetPath: '$(System.ArtifactsDirectory)/manifests'
         - task: KubernetesManifest@0
           inputs:
             action: 'deploy'
