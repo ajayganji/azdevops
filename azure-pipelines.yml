@@ -47,4 +47,6 @@ stages:
             manifests: |
               $(System.ArtifactsDirectory)/manifests/deployment.yaml
               $(System.ArtifactsDirectory)/manifests/services.yaml
+            containers: |
+              ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)
         
