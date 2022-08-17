@@ -6,7 +6,9 @@ stages:
     jobs:
       - job: Build_Push
         pool: 
-         vmImage: ubuntu-latest
+         name: userpool
+         demands:
+          - Agent.Name -equals ajdevvm
         steps:
           - task: DockerInstaller@0
             inputs:
@@ -32,8 +34,10 @@ stages:
     dependsOn: BuildandPUSHimagetoACR
     jobs:
       - job: Deploy
-        pool:
-          vmImage: ubuntu-latest
+        pool: 
+         name: userpool
+         demands:
+          - Agent.Name -equals ajdevvm
         steps:
         - task: DownloadPipelineArtifact@2
           inputs:
