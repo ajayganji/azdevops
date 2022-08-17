@@ -26,17 +26,6 @@ stages:
           - task: PublishBuildArtifacts@1
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'kubefiles'
+              ArtifactName: 'manifests'
               publishLocation: 'Container'
-  - stage: Deploy_to_AKS
-    dependsOn: BuildandPUSHimagetoACR
-    jobs:
-      - job: Deploy
-        pool:
-          vmImage: ubuntu-latest
-        steps:
-        - task: KubernetesManifest@0
-          inputs:
-            action: 'deploy'
-            kubernetesServiceConnection: 'ajay_aks_connection'
-            manifests: '**/$(Build.ArtifactStagingDirectory)/kubefiles'
+  
