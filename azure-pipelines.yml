@@ -15,7 +15,7 @@ stages:
               dockerVersion: '17.09.0-ce'
           - task: Docker@2
             inputs:
-              containerRegistry: 'ajay_acr_service_con'
+              containerRegistry: 'ganjiacr'
               repository: 'ajdevops/app1'
               command: 'buildAndPush'
               Dockerfile: '**/dockerfile'
@@ -47,19 +47,19 @@ stages:
         - task: KubernetesManifest@0
           inputs:
             action: 'createSecret'
-            kubernetesServiceConnection: 'ajay_aks_connection'
+            kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
+            namespace: 'dev'
             secretType: 'dockerRegistry'
             secretName: 'ganjacr-azdevops-secret'
             dockerRegistryEndpoint: 'ajay_acr_service_con'
         - task: KubernetesManifest@0
           inputs:
             action: 'deploy'
-            kubernetesServiceConnection: 'ajay_aks_connection'
+            kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
+            namespace: 'dev'
             manifests: |
               $(System.ArtifactsDirectory)/manifests/deployment.yaml
               $(System.ArtifactsDirectory)/manifests/services.yaml
-            containers: |
-              ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)
-            imagePullSecrets: |
-              ganjacr-azdevops-secret
+            containers: 'ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)'
+            imagePullSecrets: 'ganjacr-azdevops-secret'
         
