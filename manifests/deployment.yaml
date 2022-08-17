@@ -18,5 +18,3 @@ spec:
           image: ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)
           ports: 
             - containerPort: 80
-      imagePullSecrets:
-        -
