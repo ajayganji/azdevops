@@ -45,4 +45,7 @@ stages:
           inputs:
             action: 'deploy'
             kubernetesServiceConnection: 'ajay_aks_connection'
-            manifests: '**/$(Build.ArtifactStagingDirectory)/manifests'
+            manifests: |
+              $(System.ArtifactsDirectory)/manifests/deployment.yaml
+              $(System.ArtifactsDirectory)/manifests/services.yaml
+        
