@@ -4,7 +4,6 @@ variables:
 
   docker_service_connection: ganjiacr
   container_registry: ganjiacr
-  container_prod_repo_name: prod_application
   container_dev_repo_name: dev_application
 
 
@@ -15,7 +14,7 @@ variables:
 
   tag: $(Build.SourceVersion)
 trigger:
-- main
+- dev
 
 stages:
   - stage: BuildandPUSHimagetoACR
