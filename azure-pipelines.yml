@@ -60,7 +60,7 @@ stages:
                   inputs:
                     action: 'deploy'
                     #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-                    namespace: 'dsfault'
+                    namespace: 'default'
                     manifests: |
                       $(System.ArtifactsDirectory)/manifests/deployment.yaml
                       $(System.ArtifactsDirectory)/manifests/services.yaml
