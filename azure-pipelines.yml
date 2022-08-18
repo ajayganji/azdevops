@@ -9,7 +9,7 @@ variables:
 
 
   deployment_name: aksdeploy
-  environment: production.aks_prod_namespace
+  environment: production.prod
   namespace: prod
 
 
