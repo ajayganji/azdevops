@@ -1,3 +1,8 @@
+trigger:
+  branches:
+    include:
+      - dev
+
 variables:
   agent_pool: userpool
   agent_name: ajdevvm
@@ -12,8 +17,6 @@ variables:
 
 
   tag: $(Build.SourceVersion)
-trigger:
-- dev
 
 stages:
   - stage: BuildandPUSHimagetoACR
