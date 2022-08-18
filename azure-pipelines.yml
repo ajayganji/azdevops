@@ -30,33 +30,40 @@ stages:
   - stage: Deploy_to_AKS
     dependsOn: BuildandPUSHimagetoACR
     jobs:
-      - job: Deploy
+      - deployment: aksdeploy
+        displayName: aksdeploy
+        environment: defaultenv
         pool: 
          name: userpool
          demands:
           - Agent.Name -equals ajdevvm
-        steps:
-        - task: DownloadPipelineArtifact@2
-          inputs:
-            buildType: 'current'
-            artifactName: 'manifests'
-            targetPath: '$(System.ArtifactsDirectory)/manifests'
-        - task: KubernetesManifest@0
-          inputs:
-            action: 'createSecret'
-            kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-            namespace: 'default'
-            secretType: 'dockerRegistry'
-            secretName: 'ganjacr-azdevops-secret'
-            dockerRegistryEndpoint: 'ganjiacr'
-        - task: KubernetesManifest@0
-          inputs:
-            action: 'deploy'
-            kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-            namespace: 'default'
-            manifests: |
-              $(System.ArtifactsDirectory)/manifests/deployment.yaml
-              $(System.ArtifactsDirectory)/manifests/services.yaml
-            containers: 'ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)'
-            imagePullSecrets: 'ganjacr-azdevops-secret'
+        workspace:
+          clean: all
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadPipelineArtifact@2
+                  inputs:
+                    buildType: 'current'
+                    artifactName: 'manifests'
+                    targetPath: '$(System.ArtifactsDirectory)/manifests'
+                - task: KubernetesManifest@0
+                  inputs:
+                    action: 'createSecret'
+                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
+                    namespace: 'dev'
+                    secretType: 'dockerRegistry'
+                    secretName: 'ganjacr-azdevops-secret'
+                    dockerRegistryEndpoint: 'ganjiacr'
+                - task: KubernetesManifest@0
+                  inputs:
+                    action: 'deploy'
+                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
+                    namespace: 'dev'
+                    manifests: |
+                      $(System.ArtifactsDirectory)/manifests/deployment.yaml
+                      $(System.ArtifactsDirectory)/manifests/services.yaml
+                    containers: 'ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)'
+                    imagePullSecrets: 'ganjacr-azdevops-secret'
         
