@@ -1,12 +1,16 @@
 variables:
   agent_pool: userpool
   agent_name: ajdevvm
-  container_registry: ganjiacr
-  container_repository: ajdevops/app1
-  deployment_name: aksdeploy
-  environment: defaultenv.default
-  namespace: default
+
   docker_service_connection: ganjiacr
+  container_registry: ganjiacr
+  container_prod_repo_name: prod_application
+  container_dev_repo_name: dev_application
+
+
+  deployment_name: aksdeploy
+  environment: development.aks_dev_namespace
+  namespace: development.aks_dev_namespace
 
 
   tag: $(Build.SourceVersion)
@@ -25,7 +29,7 @@ stages:
           - task: Docker@2
             inputs:
               containerRegistry: $(container_registry)
-              repository: $(container_repository)
+              repository: $(container_dev_repo_name)
               command: 'buildAndPush'
               Dockerfile: '**/dockerfile'
               tags: $(tag)
