@@ -3,7 +3,7 @@ variables:
   agent_name: ajdevvm
 
 trigger:
-- main
+- prod
 
 stages:
   - stage: BuildandPUSHimagetoACR
