@@ -52,7 +52,7 @@ stages:
                   inputs:
                     action: 'createSecret'
                     #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-                    namespace: 'dsfault'
+                    namespace: 'default'
                     secretType: 'dockerRegistry'
                     secretName: 'ganjacr-azdevops-secret'
                     dockerRegistryEndpoint: 'ganjiacr'
