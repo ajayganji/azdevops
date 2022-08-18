@@ -32,7 +32,7 @@ stages:
     jobs:
       - deployment: aksdeploy
         displayName: aksdeploy
-        environment: defaultenv
+        environment: defaultenv.default
         pool: 
          name: userpool
          demands:
