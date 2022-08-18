@@ -8,8 +8,8 @@ variables:
 
 
   deployment_name: aksdeploy
-  environment: development.aks_dev_namespace
-  namespace: development.aks_dev_namespace
+  environment: development.dev
+  namespace: dev
 
 
   tag: $(Build.SourceVersion)
