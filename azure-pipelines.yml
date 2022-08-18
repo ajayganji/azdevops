@@ -1,7 +1,15 @@
 variables:
   agent_pool: userpool
   agent_name: ajdevvm
+  container_registry: ganjiacr
+  container_repository: ajdevops/app1
+  deployment_name: aksdeploy
+  environment: defaultenv.default
+  namespace: default
+  docker_service_connection: ganjiacr
 
+
+  tag: $(Build.SourceVersion)
 trigger:
 - main
 
@@ -16,11 +24,11 @@ stages:
         steps:
           - task: Docker@2
             inputs:
-              containerRegistry: 'ganjiacr'
-              repository: 'ajdevops/app1'
+              containerRegistry: $(container_registry)
+              repository: $(container_repository)
               command: 'buildAndPush'
               Dockerfile: '**/dockerfile'
-              tags: '$(Build.SourceVersion)'
+              tags: $(tag)
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(System.DefaultWorkingDirectory)/manifests'
@@ -34,15 +42,15 @@ stages:
   - stage: Deploy_to_AKS
     dependsOn: BuildandPUSHimagetoACR
     jobs:
-      - deployment: aksdeploy
-        displayName: aksdeploy
-        environment: defaultenv.default
+      - deployment: 
+        displayName: $(deployment_name)
+        environment: $(environment)
         pool: 
-         name: userpool
+         name: $(agent_pool)
          demands:
-          - Agent.Name -equals ajdevvm
-        workspace:
-          clean: all
+          - Agent.Name -equals $(agent_name)
+        #workspace:
+          #clean: all
         strategy:
           runOnce:
             deploy:
@@ -55,16 +63,16 @@ stages:
                 - task: KubernetesManifest@0
                   inputs:
                     action: 'createSecret'
-                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-                    namespace: 'default'
+                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942' # environment will take the service connection automatically
+                    namespace: $(namespace)
                     secretType: 'dockerRegistry'
                     secretName: 'ganjacr-azdevops-secret'
-                    dockerRegistryEndpoint: 'ganjiacr'
+                    dockerRegistryEndpoint: $(docker_service_connection)
                 - task: KubernetesManifest@0
                   inputs:
                     action: 'deploy'
-                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942'
-                    namespace: 'default'
+                    #kubernetesServiceConnection: 'devenv-aksdevops-dev-1660734623942' # environment will take the service connection automatically
+                    namespace: $(namespace)
                     manifests: |
                       $(System.ArtifactsDirectory)/manifests/deployment.yaml
                       $(System.ArtifactsDirectory)/manifests/services.yaml
