@@ -7,7 +7,6 @@ variables:
   container_dev_repo_name: dev_application
 
 
-  deployment_name: aksdeploy
   environment: development.dev
   namespace: dev
 
@@ -46,7 +45,7 @@ stages:
     dependsOn: BuildandPUSHimagetoACR
     jobs:
       - deployment: 
-        displayName: $(deployment_name)
+        displayName: aks_deploy
         environment: $(environment)
         pool: 
          name: $(agent_pool)
