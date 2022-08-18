@@ -1,3 +1,7 @@
+variables:
+  agent_pool: userpool
+  agent_name: ajdevvm
+
 trigger:
 - main
 
@@ -6,9 +10,9 @@ stages:
     jobs:
       - job: Build_Push
         pool: 
-         name: userpool
+         name: $(agent_pool)
          demands:
-          - Agent.Name -equals ajdevvm
+          - Agent.Name -equals $(agent_name)
         steps:
           - task: Docker@2
             inputs:
