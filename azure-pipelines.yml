@@ -11,7 +11,12 @@ variables:
 
   tag: $(Build.SourceVersion)
 trigger:
-- main
+  branches:
+    include:
+      - dev
+    exclude:
+      - main
+      - prod
 
 stages:
   - stage: BuildandPUSHimagetoACR
