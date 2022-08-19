@@ -1,15 +1,3 @@
-variables:
-  agent_pool: userpool
-  agent_name: ajdevvm
-  container_registry: ganjiacr
-  container_repository: ajdevops/app1
-  deployment_name: aksdeploy
-  environment: defaultenv.default
-  namespace: default
-  docker_service_connection: ganjiacr
-
-
-  tag: $(Build.SourceVersion)
 trigger:
   branches:
     include:
@@ -18,19 +6,34 @@ trigger:
       - main
       - prod
 
+variables:
+  agent_pool: userpool
+  agent_name: ajdevvm
+
+  docker_service_connection: ganjiacr
+  container_registry: ganjiacr
+  container_dev_repo_name: dev_application
+      
+      
+  environment: development.dev
+  namespace: dev
+
+      
+  tag: $(Build.SourceVersion)
+      
 stages:
   - stage: BuildandPUSHimagetoACR
     jobs:
       - job: Build_Push
         pool: 
-         name: $(agent_pool)
-         demands:
+          name: $(agent_pool)
+          demands:
           - Agent.Name -equals $(agent_name)
         steps:
           - task: Docker@2
             inputs:
               containerRegistry: $(container_registry)
-              repository: $(container_repository)
+              repository: $(container_dev_repo_name)
               command: 'buildAndPush'
               Dockerfile: '**/dockerfile'
               tags: $(tag)
@@ -48,11 +51,11 @@ stages:
     dependsOn: BuildandPUSHimagetoACR
     jobs:
       - deployment: 
-        displayName: $(deployment_name)
+        displayName: aks_deploy
         environment: $(environment)
         pool: 
-         name: $(agent_pool)
-         demands:
+          name: $(agent_pool)
+          demands:
           - Agent.Name -equals $(agent_name)
         #workspace:
           #clean: all
@@ -81,6 +84,5 @@ stages:
                     manifests: |
                       $(System.ArtifactsDirectory)/manifests/deployment.yaml
                       $(System.ArtifactsDirectory)/manifests/services.yaml
-                    containers: 'ganjiacr.azurecr.io/ajdevops/app1:$(Build.SourceVersion)'
+                    containers: 'ganjiacr.azurecr.io/ajdevops/$(container_dev_repo_name):$(Build.SourceVersion)'
                     imagePullSecrets: 'ganjacr-azdevops-secret'
-        
